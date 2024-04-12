@@ -1,0 +1,9 @@
+.buttonWrapper {
+  margin-bottom: var(--spacing-xs); /* 下側に余白を追加 */
+}
+
+.likeButton {
+  border: none; /* ボタンのボーダーを削除 */
+  background: none; /* ボタンの背景を削除 */
+  cursor: pointer; /* マウスカーソルがこのボタン上に来たとき、カーソルをポインターに変更 */
+}

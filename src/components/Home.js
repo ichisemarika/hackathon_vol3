@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import { collection, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+// import LikeButton from "./LikeButton";
 
 const getStrTime = (time) => {
   let t = new Date(time);
@@ -21,13 +22,20 @@ const Home = () => {
   };
 
   useEffect(() => {
-    onSnapshot(collection(db, "posts"), (posts) => {
-      setPosts(
-        posts.docs
-          .map((post) => post.data())
-          .sort((a, b) => b.created_at - a.created_at)
-      );
-    });
+    const unsubscribe = onSnapshot(
+      collection(db, "posts"),
+      (/*snapshot*/ posts) => {
+        setPosts(
+          /*snapshot*/ posts.docs
+            .map((post) => post.data())
+            .sort((a, b) => b.created_at - a.created_at)
+        );
+      }
+    );
+
+    // return () => {
+    //   unsubscribe();
+    // };
   }, []);
 
   if (!user) {
@@ -38,12 +46,16 @@ const Home = () => {
         <h1>ホームページ</h1>
         <p>投稿一覧</p>
         {posts.map((post) => (
-          <div className="post">
+          <div /*key={post.id}*/ className="post">
+            {" "}
+            {/* 投稿に一意のキーを追加 */}
             <div className="title">タイトル：{post.title}</div>
             <div className="content">内容：{post.content}</div>
             <div className="created_at">
               投稿日：{getStrTime(post.created_at)}
             </div>
+            {/* <LikeButton postId={post.id} />{" "}
+            LikeButton コンポーネントを追加 */}
           </div>
         ))}
         <button onClick={handleLogout}>ログアウト</button>
